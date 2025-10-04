@@ -23,7 +23,7 @@ def main():
     # Convert to pandas DataFrame
     df = pd.DataFrame(data)
 
-    # Select and rename relevant columns for readability
+    # Select and rename relevant columns for readability --
     selected_columns = [
         'id', 'symbol', 'name', 'current_price', 'market_cap', 'total_supply',
         'ath', 'ath_date', 'atl', 'atl_date', 'price_change_percentage_24h'

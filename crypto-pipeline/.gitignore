@@ -1,5 +1,10 @@
 .env
 
+# local .terraform directories
 terraform/.terraform/
+
+# Terraform lock file
 terraform/.terraform.lock.hcl
-terraform/terraform.tfstate
+
+# terraform state files
+terraform/terraform.tfstate.*

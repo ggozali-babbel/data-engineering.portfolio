@@ -1,8 +1,13 @@
+# Import Libraries
 import os
 from datetime import datetime
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
-# import boto3
+import boto3 #s3 connection python library
+
+# Import internal scripts
+from s3_file_upload import s3_file_upload
+
 
 def main():
     # Initialize CoinGecko API client
@@ -35,7 +40,11 @@ def main():
     loaded_date = datetime.now().strftime('%Y-%m-%d')
     df_selected['loaded_date'] = loaded_date
 
-    print(df_selected)
+    # Convert data to .csv before uploading to s3 bucket
+    df_selected.to_csv(f"crypto_report_{loaded_date}.csv", index=False)
+
+    # load data to s3 bucket
+    s3_file_upload(f"crypto_report_{loaded_date}.csv", "gg-crypto-data")
 
 if __name__ == "__main__":
     main()

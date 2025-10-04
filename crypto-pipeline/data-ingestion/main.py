@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
+# import boto3
 
 def main():
     # Initialize CoinGecko API client

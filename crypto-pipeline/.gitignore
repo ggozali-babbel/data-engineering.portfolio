@@ -3,9 +3,9 @@
 ################################## TERRAFORM #############################
 
 # Local .terraform directories
-**/.terraform
-**/.tfstate
-**/.external_modules
-**/.terraform.lock.hcl
+terraform/.terraform/
+*.tfstate.*
+.external_modules/
+.terraform.lock.hcl
 
 ##########################################################################

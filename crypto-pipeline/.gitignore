@@ -1,6 +1,6 @@
 .env
 
-# local .terraform directories
+# local .terraform directories --
 terraform/.terraform/
 
 # Terraform lock file

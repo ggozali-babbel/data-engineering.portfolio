@@ -7,44 +7,21 @@ import boto3 #s3 connection python library
 
 # Import internal scripts
 from s3_file_upload import s3_file_upload
-
+from crypto_api_extraction import crypto_api_extraction
 
 def main():
-    # Initialize CoinGecko API client
-    cg = CoinGeckoAPI()
+    # Find current date for logging
+    loaded_date = datetime.now().strftime('%Y-%m-%d')
 
-    # List of cryptocurrency IDs
+    # List of cryptocurrency to pull
     coin_ids = ['bitcoin', 'ethereum', 'solana', 'dogecoin', 'cardano', 'xrp']
 
-    # Fetch market data
-    data = cg.get_coins_markets(
-        vs_currency='usd',
-        ids=coin_ids,
-        order='market_cap_desc',
-        per_page=100,
-        page=1,
-        price_change_percentage='24h'
-    )
+    CSV_FOLDER_PATH = f"C:/Users/Gianl/Desktop/Babbel/data-engineering.portfolio/crypto-pipeline/data-ingestion/crypto_reports/crypto_report_{loaded_date}.csv"
 
-    # Convert to pandas DataFrame
-    df = pd.DataFrame(data)
-
-    # Select and rename relevant columns for readability --
-    selected_columns = [
-        'id', 'symbol', 'name', 'current_price', 'market_cap', 'total_supply',
-        'ath', 'ath_date', 'atl', 'atl_date', 'price_change_percentage_24h'
-    ]
-    df_selected = df[selected_columns]
-
-    # add loaded_date for logging
-    loaded_date = datetime.now().strftime('%Y-%m-%d')
-    df_selected['loaded_date'] = loaded_date
-
-    # Convert data to .csv before uploading to s3 bucket
-    df_selected.to_csv(f"crypto_report_{loaded_date}.csv", index=False)
+    crypto_api_extraction(FILE_PATH=CSV_FOLDER_PATH, crypto_list=coin_ids, current_date=loaded_date)
 
     # load data to s3 bucket
-    s3_file_upload(f"crypto_report_{loaded_date}.csv", "gg-crypto-data")
+    s3_file_upload(CSV_FOLDER_PATH, "gg-crypto-data")
 
 if __name__ == "__main__":
     main()
